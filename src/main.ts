@@ -1,15 +1,15 @@
 import Phaser from "phaser";
-import HelloScene from "./scenes/HelloScene";
+import { SplashScene } from "./scenes/SplashScene";
 
 const config: Phaser.Types.Core.GameConfig = {
     parent: "app",
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    scale: {
-        mode: Phaser.Scale.ScaleModes.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+    width: 960,
+    height: 540,
+    // scale: {
+    //     mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
+
+    // },
     physics: {
         default: 'arcade',
         arcade: {
@@ -17,7 +17,8 @@ const config: Phaser.Types.Core.GameConfig = {
         }
     },
     scene: [
-        HelloScene,
+        // HelloScene,
+        SplashScene,
     ]
 };
 

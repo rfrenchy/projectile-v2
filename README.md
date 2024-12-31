@@ -1,6 +1,6 @@
 # Vite Phaser Typescript Template
 
-Vite + Phaser + Typescript starter template.
+Projectile V2 is a study of projectile mechanics in games.
 
 ## Preview
 
@@ -9,9 +9,8 @@ Vite + Phaser + Typescript starter template.
 ## Getting Started
 
 ```bash
-npx degit iwantantra/vite-phaser-ts my-game
-cd my-game
-npm install
+npm i
+npm run dev
 ```
 
 ## Available scripts
@@ -70,3 +69,5 @@ create new folder inside this folder.
 ## License
 
 [MIT License](LICENSE.md)
+
+![screenshot](screenshot.png)
