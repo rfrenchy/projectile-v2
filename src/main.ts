@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 import { SplashScene } from "./scenes/SplashScene";
 import { NextScene } from "./scenes/MiscScenes";
+import { GameScene } from "./scenes/GameScene";
 
 const config: Phaser.Types.Core.GameConfig = {
     parent: "app",
     type: Phaser.AUTO,
-    width: 960,
+    width: 1280,
     height: 540,
     // scale: {
     //     mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
@@ -20,7 +21,8 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [
         // HelloScene,
         SplashScene,
-        NextScene
+        NextScene,
+        GameScene
     ]
 };
 

@@ -1,0 +1,1 @@
+convert -size 1280x540 "xc:#bbb" public/assets/images/21-9-background.png

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "gen-debug": "./scripts/gen-debug-assets.sh",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix"

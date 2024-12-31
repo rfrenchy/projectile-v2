@@ -41,7 +41,7 @@ export class SplashScene extends Scene {
             callback: () => {
                 mcam.fadeOut(1000, 0, 0, 0);
                 mcam.once("camerafadeoutcomplete", () => {
-                    // s.start("NextScene");
+                    this.scene.start("GameScene");
                 });
             }
         });
