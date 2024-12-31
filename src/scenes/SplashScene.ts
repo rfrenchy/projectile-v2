@@ -1,5 +1,9 @@
 import { Scene } from "phaser";
 
+type config = {
+    version: string;
+}
+
 export class SplashScene extends Scene {
 
     constructor() {
@@ -8,37 +12,38 @@ export class SplashScene extends Scene {
 
     preload() {
         this.load.image("vite-phaser", "assets/images/vite-phaser.png");
-    }
-
-    init() {
-        // PHASER FX / CAMERA FX
-
-        this.cameras.main.fadeIn(1000, 0, 0, 0);   
-
+        this.load.json("config", "config/scene/splash_config.json");
     }
 
     create() {
+        const mcam = this.cameras.main
+        const config = this.cache.json.get("config") || {} as config;
+
+        if (!config.version)
+            throw new Error("No version found in splash config");
+
+        mcam.fadeIn(1000, 0, 0, 0);   
+
         this.add.image(
             this.scale.width / 2, 
             this.scale.height / 2, 
             "vite-phaser");
 
-        // const fx = logo.postFX.addShine(1, .2, 5);
-        
+        this.add.text(
+            this.scale.width / 2 - 28,
+            this.scale.height / 2 + 250,
+            config.version,
+            { color: "#FFF" }
+        )
 
         this.time.addEvent({
-            delay: 2000,
+            delay: 3000,
             callback: () => {
-                const main_camera = this.cameras.main.fadeOut(1000, 0, 0, 0);
-                // Fadeout complete
-
-                main_camera.once("camerafadeoutcomplete", () => {
-                //   this.scene.start("MenuScene");
-                    // after camera work, go to the start game scene
-                                
+                mcam.fadeOut(1000, 0, 0, 0);
+                mcam.once("camerafadeoutcomplete", () => {
+                    // s.start("NextScene");
                 });
             }
         });
     }
-
 }

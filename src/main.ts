@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { SplashScene } from "./scenes/SplashScene";
+import { NextScene } from "./scenes/MiscScenes";
 
 const config: Phaser.Types.Core.GameConfig = {
     parent: "app",
@@ -19,6 +20,7 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [
         // HelloScene,
         SplashScene,
+        NextScene
     ]
 };
 
