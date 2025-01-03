@@ -1,8 +1,11 @@
 import { Scene, GameObjects } from "phaser";
 import { Direction, Player } from "../characters/Player1";
+import { TriadProjectile } from "../characters/TriadProjectile";
 
 export class GameScene extends Scene {
     player!: Player;
+    triad!: TriadProjectile
+
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
     constructor() {
@@ -17,9 +20,13 @@ export class GameScene extends Scene {
 
         // Player
         this.load.image("player", "player/player.png");
-
         this.load.atlas("propulsion-fire", "player/propulsion/propulsion-fire.png", "player/propulsion/propulsion-fire_atlas.json");
         this.load.animation("propulsion-fire-anim", "player/propulsion/propulsion-fire_anim.json");
+
+        // Triad Projectile
+        this.load.image("projectile-orange", "triad/projectile-orange-0.png")
+        this.load.image("triad-bullet", "triad/bullet.png");
+
     }
 
     init() {
@@ -44,12 +51,18 @@ export class GameScene extends Scene {
 
         this.player = new Player(this);
         this.player.start();
+    
+        this.triad = new TriadProjectile({ scene: this, x: 600, y: 100 })
+        this.triad.start()
     }
 
     update(time: number, delta: number) {
+        // Update Player
         this.player.update(time, delta);
-
         this.keyboardInput()
+
+        // Update Triad enemy
+        this.triad.update(time, delta, this.player.x)
     }
 
     keyboardInput() {
