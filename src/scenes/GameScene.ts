@@ -1,10 +1,12 @@
 import { Scene, GameObjects } from "phaser";
 import { Direction, Player } from "../characters/Player1";
 import { TriadProjectile } from "../characters/TriadProjectile";
+import { WaveProjectile } from "../characters/WaveProjectile";
 
 export class GameScene extends Scene {
     player!: Player;
     triad!: TriadProjectile
+    wave!: WaveProjectile
 
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
@@ -62,20 +64,24 @@ export class GameScene extends Scene {
         this.triad = new TriadProjectile({ scene: this, x: 100, y: 50 })
         this.triad.start()
 
-        console.log(this.triad.bulletsv2)
+        this.wave = new WaveProjectile(this, { texture: "projectile-orange"})
+        this.wave.start()
 
+        this.playerhitsetup();
+    }
+
+    private playerhitsetup() {
         let bullets;
         // bullets = this.triad.bulletsv2.b1.bullet        
-
         bullets = Object.keys(this.triad.bulletsv2)
-            .map(k => this.triad.bulletsv2[k].bullet)
+            .map(k => this.triad.bulletsv2[k].bullet);
 
-        console.log(bullets)
+        console.log(bullets);
 
         this.physics.overlap(
             bullets,
-            this.player, 
-        () => console.log("player hit"))
+            this.player,
+            () => console.log("player hit"));
     }
 
     update(time: number, delta: number) {
@@ -85,6 +91,9 @@ export class GameScene extends Scene {
 
         // Update Triad enemy
         this.triad.update(time, delta, this.player.x)
+
+        // Update Wave enemy
+        this.wave.update(time, delta)
     }
 
     keyboardInput() {
