@@ -1,14 +1,9 @@
 import { Scene, GameObjects } from "phaser";
-import { Player } from "../characters/Player1";
-
-// class NullObject extends GameObjects.Sprite {
-//     constructor(scene: Phaser.Scene) {
-//         super(scene)
-//     }
-// }
+import { Direction, Player } from "../characters/Player1";
 
 export class GameScene extends Scene {
     player!: Player;
+    cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
     constructor() {
         super("GameScene");
@@ -22,15 +17,20 @@ export class GameScene extends Scene {
 
         // Player
         this.load.image("player", "player/player.png");
+
         this.load.atlas("propulsion-fire", "player/propulsion/propulsion-fire.png", "player/propulsion/propulsion-fire_atlas.json");
         this.load.animation("propulsion-fire-anim", "player/propulsion/propulsion-fire_anim.json");
     }
 
     init() {
         this.cameras.main.fadeIn(1000, 0, 0, 0);
-        // this.player = new Player(this);
 
-        this.player = new Player(this);
+        // Keyboard Input
+        this.cursors = this.input.keyboard.createCursorKeys()
+
+        // Linter? to flag when objects constructed in init and not create?
+        // to work properly with phaser's framework?
+
         // this.hud = new Hud({ scene: this });
     }
 
@@ -38,14 +38,33 @@ export class GameScene extends Scene {
         // Add Background
         this.add.image(0, 0, "background").setOrigin(0, 0);
 
+        // Add Floor
+
         // this.add.image(0, this.scale.height, "floor").setOrigin(0, 1);
 
+        this.player = new Player(this);
         this.player.start();
     }
 
     update(time: number, delta: number) {
         this.player.update(time, delta);
+
+        this.keyboardInput()
     }
+
+    keyboardInput() {
+        // Move player's character on keyboard input 
+        if (this.cursors.up.isDown)
+            this.player.move(Direction.up);
+        if (this.cursors.down.isDown)
+            this.player.move(Direction.down);
+
+        if (this.cursors.left.isDown)
+            this.player.move(Direction.left);
+
+        if (this.cursors.right.isDown) 
+            this.player.move(Direction.right);
+    }    
 }
 
 type HudTextUpdate = "points" | "timeout"
