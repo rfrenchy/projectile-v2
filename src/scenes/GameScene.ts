@@ -38,6 +38,8 @@ export class GameScene extends Scene {
         // Linter? to flag when objects constructed in init and not create?
         // to work properly with phaser's framework?
 
+        // setup physics
+
         // this.hud = new Hud({ scene: this });
     }
 
@@ -49,11 +51,31 @@ export class GameScene extends Scene {
 
         // this.add.image(0, this.scale.height, "floor").setOrigin(0, 1);
 
+        // 24 frames a second
+        // over one second, how many times do i want player to have to dodge?
+        // How often does cuphead make player dodge?
+        // whats the 'rhythm'?
+
         this.player = new Player(this);
         this.player.start();
-    
-        this.triad = new TriadProjectile({ scene: this, x: 600, y: 100 })
+        
+        this.triad = new TriadProjectile({ scene: this, x: 100, y: 50 })
         this.triad.start()
+
+        console.log(this.triad.bulletsv2)
+
+        let bullets;
+        // bullets = this.triad.bulletsv2.b1.bullet        
+
+        bullets = Object.keys(this.triad.bulletsv2)
+            .map(k => this.triad.bulletsv2[k].bullet)
+
+        console.log(bullets)
+
+        this.physics.overlap(
+            bullets,
+            this.player, 
+        () => console.log("player hit"))
     }
 
     update(time: number, delta: number) {

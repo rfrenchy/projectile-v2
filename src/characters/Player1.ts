@@ -13,7 +13,7 @@ export class Player extends Physics.Arcade.Image {
     // bullets: Physics.Arcade.Group;
 
     constructor(scene: Phaser.Scene) {
-        super(scene, 100, 100, "player");
+        super(scene, 50, 100, "player");
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);

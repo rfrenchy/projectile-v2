@@ -1,6 +1,8 @@
-import { GameObjects, Scene } from "phaser";
+import { GameObjects, Scene, Physics } from "phaser";
 
-export class Bullet extends GameObjects.Image
+
+
+export class Bullet extends Physics.Arcade.Image
 {
     speed;
     flame: any;
