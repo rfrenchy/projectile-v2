@@ -24,6 +24,17 @@ export class WaveProjectile extends GameObjects.Sprite {
 
         // add to phaser physics engine
         // take y coords from a rotation
+
+        // pre calc y?
+
+        // assume y 0 on an edge of a circle, 
+        // simulate rotation around repeatedly
+        
+        // def rotation(theta):
+        // return np.array([[ np.cos(theta), -np.sin(theta)   ],
+        //                  [ np.sin(theta),  np.cos(theta)   ]])
+     
+        
     }
 
     start() {

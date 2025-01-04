@@ -93,7 +93,9 @@ export class GameScene extends Scene {
         this.triad.update(time, delta, this.player.x)
 
         // Update Wave enemy
-        this.wave.update(time, delta)
+        if (this.wave.active) {
+            this.wave.update(time, delta)
+        }
     }
 
     keyboardInput() {
