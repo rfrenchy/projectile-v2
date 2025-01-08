@@ -1,11 +1,24 @@
-import { GameObjects, Math } from "phaser";
+import { GameObjects } from "phaser";
 import { Bullet } from "./Bullet";
 
+type BulletSet = {
+    [key: string]: {
+        bullet: Phaser.Physics.Arcade.Group | null,
+        angle: number
+    }
+}
+
 export class TriadProjectile extends GameObjects.Sprite {
-    bulletsv2: any = {
+    bulletsv2: BulletSet = {
         b1: { "bullet": null, "angle": 0 },
-        b2: { "bullet": null, "angle": 15 },
-        b3: { "bullet": null, "angle": 360 - 15 }
+        b2: { "bullet": null, "angle": Math.PI / 6 },
+        b3: { "bullet": null, "angle": Math.PI * 2 - (Math.PI / 6) }
+    } 
+
+    bulletsv3: BulletSet = {
+        b1: { "bullet": null, "angle": 0 },
+        b2: { "bullet": null, "angle": Math.PI / 16 },
+        b3: { "bullet": null, "angle": Math.PI * 2 - (Math.PI / 16) }
     } 
 
     constructor(config: any) {
@@ -15,9 +28,14 @@ export class TriadProjectile extends GameObjects.Sprite {
         this.scene.physics.add.existing(this) // add an arcarde physics body
         // this.body.setSize(1, 1)
 
+        this.addBulletPhysics(this.bulletsv2)
+        this.addBulletPhysics(this.bulletsv3)
+    }
+
+    addBulletPhysics(bulletset: BulletSet) {
         // TODO bad use of phaser, fix to so using group efficiently?
-        Object.keys(this.bulletsv2).forEach((key) => {
-            this.bulletsv2[key].bullet = this.scene.physics.add.group({
+        Object.keys(bulletset).forEach((key) => {
+            bulletset[key].bullet = this.scene.physics.add.group({
                 classType: Bullet,
                 maxSize: 100,
                 runChildUpdate: true
@@ -48,15 +66,18 @@ export class TriadProjectile extends GameObjects.Sprite {
         delay: 1000,
     })
 
-    fire({ continuous = true } = {}) {
-        Object.keys(this.bulletsv2).forEach((key) => {
-            const { bullet, angle } = this.bulletsv2[key]
-
-            // if bullet exists then fire it            
+    fireBullets(bulletset: BulletSet) {
+        Object.keys(bulletset).forEach((k) => {
+            const { bullet, angle } = bulletset[k]
             if (bullet) {
-                bullet.get().firev2(this.x, this.y, angle, "triad-bullet")
-            } 
+                bullet.get().firev3(this.x, this.y, angle, "triad-bullet")
+            }
         })
+    }
+
+    fire({ continuous = true } = {}) {
+        // this.fireBullets(this.bulletsv2)
+        this.fireBullets(this.bulletsv3)
 
         // fire every 3 seconds forever
         const firerate = 3000

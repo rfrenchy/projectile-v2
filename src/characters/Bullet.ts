@@ -53,6 +53,21 @@ export class Bullet extends Physics.Arcade.Image
         this.end_direction = this.DOWN.rotate(Phaser.Math.DegToRad(angle))
     }
 
+    // angle in radians
+    firev3(x: number, y: number, angle = 0, bullet_texture = "bullet") 
+    {
+        // Change bullet change texture
+        this.setTexture(bullet_texture);
+
+        // Phaser bologna
+        this.setPosition(x, y); 
+        this.setActive(true)
+        this.setVisible(true)
+
+        // direction unit vector
+        this.end_direction = this.DOWN.rotate(angle)
+    }
+
     destroyBullet ()
     {
         // if (this.flame === undefined) {
