@@ -18,8 +18,8 @@ export class GameScene extends Scene {
     preload() {
         // Background
         this.load.setPath("assets")
-        // this.load.image("background", "images/21-9-background.png");
-        this.load.image("background", "images/9-21-background.png");
+        this.load.image("background", "images/21-9-background.png");
+        // this.load.image("background", "images/9-21-background.png");
 
         // Player
         this.load.image("player", "player/player.png");

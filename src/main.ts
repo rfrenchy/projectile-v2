@@ -16,7 +16,8 @@ const superportrait = {
 const config: Phaser.Types.Core.GameConfig = {
     parent: "app",
     type: Phaser.AUTO,
-    ...superportrait,
+    // ...superportrait,
+    ...superlandscape,
     // scale: {
     //     mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
 
