@@ -30,6 +30,8 @@ export class GameScene extends Scene {
         this.load.image("projectile-orange", "triad/projectile-orange-0.png")
         this.load.image("triad-bullet", "triad/bullet.png");
 
+        // Wave Projectile
+        this.load.image("wave-enemy", "wave/wave-enemy-1.png")
     }
 
     init() {
@@ -65,7 +67,7 @@ export class GameScene extends Scene {
         this.triad = new TriadProjectile({ scene: this, x: 100, y: 50 })
         this.triad.start()
 
-        this.wave = new WaveProjectile(this, { texture: "projectile-orange"})
+        this.wave = new WaveProjectile(this, { texture: "wave-enemy"})
         this.wave.start()
 
         this.playerhitsetup();

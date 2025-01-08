@@ -13,8 +13,11 @@ export class WaveProjectile extends GameObjects.Sprite {
     x_direction: Phaser.Math.Vector2
     speed: number
 
-    // todo remove
     y_index: number = 0;
+    // vertical = {
+    //     y_path: [],
+    //     index: 0,
+    // }
 
     constructor(scene: Scene, config: WaveConfig) {
         super(scene, 0, scene.scale.height / 2, config.texture)   
