@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { SplashScene } from "./scenes/SplashScene";
 import { NextScene } from "./scenes/MiscScenes";
 import { GameScene } from "./scenes/GameScene";
+import { TriadLevel } from "./scenes/TriadLevel";
+import StartMenuScene from "./scenes/StartMenuScene";
 
 const superlandscape = {
     width: 1280,
@@ -13,11 +15,17 @@ const superportrait = {
     height: 1280 * 0.5
 }
 
+const square = {
+    height: 1280,
+    width: 1280
+}
+
 const config: Phaser.Types.Core.GameConfig = {
     parent: "app",
     type: Phaser.AUTO,
     // ...superportrait,
-    ...superlandscape,
+     ...superlandscape,
+    // ...square,
     // scale: {
     //     mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
 
@@ -29,10 +37,11 @@ const config: Phaser.Types.Core.GameConfig = {
         }
     },
     scene: [
-        // HelloScene,
-        // SplashScene,
-        // NextScene,
-        GameScene
+        StartMenuScene,
+        SplashScene,
+        NextScene,
+        GameScene,
+        TriadLevel,
     ]
 };
 
