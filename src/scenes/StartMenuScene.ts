@@ -99,9 +99,11 @@ export default class StartMenuScene extends Phaser.Scene {
                 case SelectedScene.None:
                     return
                 case SelectedScene.Triad:
-                    this.scene.start("GameScene")
+                    this.scene.start("TriadLevel")
+                    return
                 case SelectedScene.Wave:
-                    this.scene.start("TODO")
+                    this.scene.start("WaveLevel")
+                    return
             }
         }
     }

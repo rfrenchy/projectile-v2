@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 import { SplashScene } from "./scenes/SplashScene";
 import { NextScene } from "./scenes/MiscScenes";
-import { GameScene } from "./scenes/GameScene";
 import { TriadLevel } from "./scenes/TriadLevel";
 import StartMenuScene from "./scenes/StartMenuScene";
+import { WaveLevel } from "./scenes/WaveLevel";
 
 const superlandscape = {
     width: 1280,
@@ -40,8 +40,8 @@ const config: Phaser.Types.Core.GameConfig = {
         StartMenuScene,
         SplashScene,
         NextScene,
-        GameScene,
         TriadLevel,
+        WaveLevel,
     ]
 };
 

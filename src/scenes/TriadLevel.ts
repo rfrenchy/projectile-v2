@@ -1,24 +1,23 @@
-import { Scene } from "phaser";
+import { Scene, GameObjects } from "phaser";
+import { Direction, Player } from "../characters/Player1";
 import { TriadProjectile } from "../characters/TriadProjectile";
-import { Player } from "../characters/Player1";
-import { handlePlayerInput } from "../input";
 
 export class TriadLevel extends Scene {
-    // Input
+    player!: Player;
+    triad!: TriadProjectile
+
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
-    // Agents
-    player!: Player
-    triad!: TriadProjectile 
-
     constructor() {
-        super("TriadLevel")
+        super("TriadLevel");
     }
 
+    // Preload assets required for the scene
     preload() {
         // Background
         this.load.setPath("assets")
         this.load.image("background", "images/21-9-background.png");
+        // this.load.image("background", "images/9-21-background.png");
 
         // Player
         this.load.image("player", "player/player.png");
@@ -35,29 +34,53 @@ export class TriadLevel extends Scene {
 
         // Keyboard Input
         this.cursors = this.input.keyboard.createCursorKeys()
+
+        // Linter? to flag when objects constructed in init and not create?
+        // to work properly with phaser's framework?
+
+        // setup physics
+
+        // this.hud = new Hud({ scene: this });
     }
 
     create() {
         // Add Background
         this.add.image(0, 0, "background").setOrigin(0, 0);
 
-        // Create Player
-        this.player = new Player(this)
-        this.player.start()
+        // Add Floor
 
-        // Create Triad
+        // this.add.image(0, this.scale.height, "floor").setOrigin(0, 1);
+
+        // 24 frames a second
+        // over one second, how many times do i want player to have to dodge?
+        // How often does cuphead make player dodge?
+        // whats the 'rhythm'?
+
+        this.player = new Player(this);
+        this.player.start();
+        
         this.triad = new TriadProjectile({ scene: this, x: 100, y: 50 })
         this.triad.start()
     }
 
     update(time: number, delta: number) {
-        // assumes agents are created
+        // Update Player
+        this.player.update(time, delta);
+        this.keyboardInput()
 
-        this.player.update(time, delta)
-
-        // should just handle input in player update?
-        handlePlayerInput(this.player, this.cursors)
-
+        // Update Triad enemy
         this.triad.update(time, delta, this.player.x)
     }
+
+    keyboardInput() {
+        // Move player's character on keyboard input 
+        if (this.cursors.up.isDown)
+            this.player.move(Direction.up);
+        if (this.cursors.down.isDown)
+            this.player.move(Direction.down);
+        if (this.cursors.left.isDown)
+            this.player.move(Direction.left);
+        if (this.cursors.right.isDown) 
+            this.player.move(Direction.right);
+    }    
 }
