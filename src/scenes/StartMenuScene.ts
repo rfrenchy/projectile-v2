@@ -1,48 +1,64 @@
 
-enum SelectedScene { None, Triad, Wave }
+// TODO next/previous working
+
+enum SceneKey { None, Triad, Wave }
 
 type MenuItem = {
+    key: SceneKey
     name: string
+    available: boolean
+    gameobject?: Phaser.GameObjects.Text
 }
 
-// TODO ask copilot why typescript not letting me index with enum
-type MenuItemList = {
-  [key: SelectedScene]: MenuItem 
-}
-
-type SceneSelection = {
+type Menu = {
+    selected: SceneKey, // make a menu item?
+    scenes: MenuItem[] 
     index: number
-    selected: SelectedScene,
-    available: SelectedScene[],
-    unavailable: SelectedScene[],
-    levels: MenuItemList 
+
+    next: () => void
+    previous: () => void 
+    open: () => void
 }
 
 export default class StartMenuScene extends Phaser.Scene {    
-    selected: SelectedScene = SelectedScene.None
-    cursors!: Phaser.Types.Input.Keyboard.CursorKeys
+    selected: SceneKey = SceneKey.None
 
-    sceneselection: SceneSelection = {
-        index: -1,
-        selected: SelectedScene.None,
-        levels: {
-            [SelectedScene.None]: {},
-            [SelectedScene.Triad]: { name: "Triad" },
-            [SelectedScene.Wave]: { name: "Wave" }, 
-            
+    cursors!: Phaser.Types.Input.Keyboard.CursorKeys // set in init
+
+    menu: Menu = {
+        selected: SceneKey.Triad,
+        index: 0,
+        scenes: [
+            { key: SceneKey.Triad, name: "TriadLevel", available: true },
+            { key: SceneKey.Wave,  name: "WaveLevel", available: true },
+        ],
+        next: function() {
+            // reset current
+            this.scenes[this.index].gameobject?.setBackgroundColor("none")
+
+            // incr index
+            this.index = (this.index + 1) % this.scenes.length
+
+            // update new
+            this.scenes[this.index].gameobject?.setBackgroundColor("blue")
         },
-        available: [SelectedScene.Triad, SelectedScene.Wave],
-        unavailable: []
-    }
+        previous: function() {
+            // reset current
+            this.scenes[this.index].gameobject?.setBackgroundColor("none")
 
-    levelSelectionText: Phaser.GameObjects.Text[] = []
+            // incr index
+            this.index = (this.index - 1) % this.scenes.length
+
+            // update new
+            this.scenes[this.index].gameobject?.setBackgroundColor("blue")
+        }, 
+        open: () => {
+            this.scene.start(this.menu.scenes[this.menu.index].name)
+        }
+    }
 
     constructor() {
         super('start-menu-scene');
-    }
-
-    preload() {
-        // this.load.image('start-menu', 'assets/images/start-menu.png');
     }
 
     init() { 
@@ -51,60 +67,31 @@ export default class StartMenuScene extends Phaser.Scene {
 
     create() {
         const { width, height } = this.scale;
-        const centerX = width * 0.5;
-        const centerY = height * 0.5;
 
-        const tenth = height / 10
+        // divide space into grid
+        const col = width * 0.5; // 1 column
+        const row = height / 10; // 10 rows
 
-        this.levelSelectionText = this.sceneselection.available.map((s, i) => {
-            const y = tenth * i+1
-
-            // TODO ask copilot why typescript not letting me index with enum
-            const fu = this.sceneselection.levels as any
-            const name = fu[s].name 
-            return this.add.text(centerX, y, name, {})
-        })
+        // write level name text object in each cell
+        this.menu.scenes
+            .filter(s => s.available)
+            .forEach((s,i) => {
+                s.gameobject = this.add.text(col, row * (i+1), s.name, {})
+            })
     }
 
     update() {
         // handle change selection
         if (this.cursors.down.isDown) {
-            // reset color of prior selection
-
-            // really bad but tired when coded it 
-
-            let scenetext = this.levelSelectionText[this.sceneselection.index]
-            if (scenetext) {
-                scenetext.setBackgroundColor("none")
-                // scenetext.setStroke("white", 16)
-            }
-            
-            this.sceneselection.index = (this.sceneselection.index + 1) % 2
-
-            scenetext = this.levelSelectionText[this.sceneselection.index]
-            if (scenetext) {
-                scenetext.setBackgroundColor("blue")
-            }
-
-
-            this.selected = this.sceneselection.available[this.sceneselection.index]
+            this.menu.next()
         }
 
         if (this.cursors.up.isDown) {
-            // todo
+            this.menu.previous()
         }
 
         if (this.cursors.space.isDown) {
-            switch (this.selected) {
-                case SelectedScene.None:
-                    return
-                case SelectedScene.Triad:
-                    this.scene.start("TriadLevel")
-                    return
-                case SelectedScene.Wave:
-                    this.scene.start("WaveLevel")
-                    return
-            }
+            this.menu.open()
         }
     }
 }
